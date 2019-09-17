@@ -1,5 +1,9 @@
+## History 
 20190917 Init project    
 20190918 Initial APK Setup     
+
+## App Details
+TBD
 
 ## Troubleshooting 
 
