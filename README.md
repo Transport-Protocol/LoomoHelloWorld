@@ -17,7 +17,10 @@ Do not miss to add the following lines in your *build.gradle* file of you app (n
     implementation 'com.segway.robot:emoji:0.1.28'
     implementation 'com.segway.robot:support-lib:1.1.2'
 ```
-
+Note: Unknown issue: emoji raise an error (Not investigated yet). Current workaround: 
+```
+ // implementation 'com.segway.robot:emoji:0.1.28'
+```
 ## App Details
 TBD
 
