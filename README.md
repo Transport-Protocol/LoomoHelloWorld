@@ -2,6 +2,8 @@
 20190917 Init project    
 20190918 Initial APK Setup     
 
+## Prepare
+Follow the steps of the Segway Documentation: [[External Segway| https://developer.segwayrobotics.com/developer/documents/setup-developing-environment.html]]
 ## App Details
 TBD
 
