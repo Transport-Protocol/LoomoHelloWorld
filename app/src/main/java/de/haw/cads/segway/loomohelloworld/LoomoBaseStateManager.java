@@ -6,20 +6,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
 
-import com.segway.robot.algo.Pose2D;
-import com.segway.robot.sdk.base.bind.ServiceBinder;
-import com.segway.robot.sdk.locomotion.head.Head;
-import com.segway.robot.sdk.locomotion.sbv.Base;
-import com.segway.robot.sdk.perception.sensor.Sensor;
-import com.segway.robot.sdk.vision.Vision;
-import com.segway.robot.sdk.voice.Recognizer;
-import com.segway.robot.sdk.voice.Speaker;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Main System for Loomo Events
  */
 // @TODO We should add an Observer Pattern, to create a listener structure
-public class LoomoBaseStateManager {
+public class LoomoBaseStateManager implements ILoomoBaseStateObserver {
     private static final String TAG = "LoomoBaseStateManager";
     private static volatile LoomoBaseStateManager instance;
     private static Object mutex = new Object();
@@ -47,9 +41,28 @@ public class LoomoBaseStateManager {
     private static final String BASE_UNLOCK = "com.segway.robot.action.BASE_UNLOCK";
     private static final String STAND_UP = "com.segway.robot.action.STAND_UP";
 
+    public static List<ILoomoBaseStateListener> channel_BATTERY_CHANGED = new ArrayList<>();
+    public static List<ILoomoBaseStateListener> channel_POWER_DOWN = new ArrayList<>();
+    public static List<ILoomoBaseStateListener> channel_POWER_BUTTON_PRESSED = new ArrayList<>();
+    public static List<ILoomoBaseStateListener> channel_POWER_BUTTON_RELEASED = new ArrayList<>();
+    public static List<ILoomoBaseStateListener> channel_SBV_MODE = new ArrayList<>();
+    public static List<ILoomoBaseStateListener> channel_ROBOT_MODE = new ArrayList<>();
+    public static List<ILoomoBaseStateListener> channel_PITCH_LOCK = new ArrayList<>();
+    public static List<ILoomoBaseStateListener> channel_PITCH_UNLOCK = new ArrayList<>();
+    public static List<ILoomoBaseStateListener> channel_YAW_LOCK= new ArrayList<>();
+    public static List<ILoomoBaseStateListener> channel_YAW_UNLOCK = new ArrayList<>();
+    public static List<ILoomoBaseStateListener> channel_STEP_ON = new ArrayList<>();
+    public static List<ILoomoBaseStateListener> channel_STEP_OFF = new ArrayList<>();
+    public static List<ILoomoBaseStateListener> channel_LIFT_UP = new ArrayList<>();
+    public static List<ILoomoBaseStateListener> channel_PUT_DOWN = new ArrayList<>();
+    public static List<ILoomoBaseStateListener> channel_PUSHING = new ArrayList<>();
+    public static List<ILoomoBaseStateListener> channel_PUSH_RELEASE = new ArrayList<>();
+    public static List<ILoomoBaseStateListener> channel_BASE_LOCK = new ArrayList<>();
+    public static List<ILoomoBaseStateListener> channel_BASE_UNLOCK = new ArrayList<>();
+    public static List<ILoomoBaseStateListener> channel_STAND_UP = new ArrayList<>();
 
     private LoomoBaseStateManager() {
-
+        // Perhaps we need something here
     }
 
     public static LoomoBaseStateManager getInstance(Context c) {
@@ -61,13 +74,253 @@ public class LoomoBaseStateManager {
                 if (result == null) {
                     IntentFilter filter = new IntentFilter();
                     instance = result = new LoomoBaseStateManager();
-                    c.getApplicationContext().registerReceiver(new LoomoBroadcastReceiver(filter), filter);
+                    c.getApplicationContext().registerReceiver(new LoomoBroadcastReceiver(instance,filter), filter);
                 }
 
             }
         }
         return result;
     }
+
+    public void registerLoomoBaseStateListener(ILoomoBaseStateListener l, String e){
+
+        Log.i(TAG,"Register Listener to event " + e);
+        switch (e) {
+            case BATTERY_CHANGED:
+                channel_BATTERY_CHANGED.add(l);
+                break;
+            case POWER_DOWN:
+                channel_POWER_DOWN.add(l);
+                break;
+            case POWER_BUTTON_PRESSED:
+                channel_POWER_BUTTON_PRESSED.add(l);
+                break;
+            case POWER_BUTTON_RELEASED:
+                channel_POWER_BUTTON_RELEASED.add(l);
+                break;
+            case SBV_MODE:
+                channel_SBV_MODE.add(l);
+                break;
+            case ROBOT_MODE:
+                channel_ROBOT_MODE.add(l);
+                break;
+            case PITCH_LOCK:
+                channel_PITCH_LOCK.add(l);
+                break;
+            case PITCH_UNLOCK:
+                channel_PITCH_UNLOCK.add(l);
+                break;
+            case YAW_LOCK:
+                channel_YAW_LOCK.add(l);
+                break;
+            case YAW_UNLOCK:
+                channel_YAW_UNLOCK.add(l);
+                break;
+            case STEP_ON:
+                channel_STEP_ON.add(l);
+                break;
+            case STEP_OFF:
+                channel_STEP_OFF.add(l);
+                break;
+            case LIFT_UP:
+                channel_LIFT_UP.add(l);
+                break;
+            case PUT_DOWN:
+                channel_PUT_DOWN.add(l);
+                break;
+            case PUSHING:
+                channel_PUSHING.add(l);
+                break;
+            case PUSH_RELEASE:
+                channel_PUSH_RELEASE.add(l);
+                break;
+            case BASE_LOCK:
+                channel_BASE_LOCK.add(l);
+                break;
+            case BASE_UNLOCK:
+                channel_BASE_UNLOCK.add(l);
+                break;
+            case STAND_UP:
+                channel_STAND_UP.add(l);
+                break;
+            default:
+                Log.e(TAG,"Wow, somting is wrong with the Segway documentation");
+                new IllegalArgumentException("Something strange happend");
+        }
+    }
+
+    public void unregisterLoomoBaseStateListener(ILoomoBaseStateListener l, String e){
+
+        Log.i(TAG,"Un-Register Listener to event " + e);
+        switch (e) {
+            case BATTERY_CHANGED:
+                channel_BATTERY_CHANGED.remove(l);
+                break;
+            case POWER_DOWN:
+                channel_POWER_DOWN.remove(l);
+                break;
+            case POWER_BUTTON_PRESSED:
+                channel_POWER_BUTTON_PRESSED.remove(l);
+                break;
+            case POWER_BUTTON_RELEASED:
+                channel_POWER_BUTTON_RELEASED.remove(l);
+                break;
+            case SBV_MODE:
+                channel_SBV_MODE.remove(l);
+                break;
+            case ROBOT_MODE:
+                channel_ROBOT_MODE.remove(l);
+                break;
+            case PITCH_LOCK:
+                channel_PITCH_LOCK.remove(l);
+                break;
+            case PITCH_UNLOCK:
+                channel_PITCH_UNLOCK.remove(l);
+                break;
+            case YAW_LOCK:
+                channel_YAW_LOCK.remove(l);
+                break;
+            case YAW_UNLOCK:
+                channel_YAW_UNLOCK.remove(l);
+                break;
+            case STEP_ON:
+                channel_STEP_ON.remove(l);
+                break;
+            case STEP_OFF:
+                channel_STEP_OFF.remove(l);
+                break;
+            case LIFT_UP:
+                channel_LIFT_UP.remove(l);
+                break;
+            case PUT_DOWN:
+                channel_PUT_DOWN.remove(l);
+                break;
+            case PUSHING:
+                channel_PUSHING.remove(l);
+                break;
+            case PUSH_RELEASE:
+                channel_PUSH_RELEASE.remove(l);
+                break;
+            case BASE_LOCK:
+                channel_BASE_LOCK.remove(l);
+                break;
+            case BASE_UNLOCK:
+                channel_BASE_UNLOCK.remove(l);
+                break;
+            case STAND_UP:
+                channel_STAND_UP.remove(l);
+                break;
+            default:
+                Log.e(TAG,"Wow, somting is wrong with the Segway documentation");
+                new IllegalArgumentException("Something strange happend");
+        }
+    }
+
+    public void notifyListener(String e) {
+        Log.i(TAG,"Inform all Listeners of Event " + e);
+        switch (e) {
+            case BATTERY_CHANGED:
+                for (ILoomoBaseStateListener l : channel_BATTERY_CHANGED) {
+                    l.onEvent(e);
+                }
+                break;
+            case POWER_DOWN:
+                for (ILoomoBaseStateListener l : channel_POWER_DOWN) {
+                    l.onEvent(e);
+                }
+                break;
+            case POWER_BUTTON_PRESSED:
+                for (ILoomoBaseStateListener l : channel_POWER_BUTTON_PRESSED) {
+                    l.onEvent(e);
+                }
+                break;
+            case POWER_BUTTON_RELEASED:
+                for (ILoomoBaseStateListener l : channel_POWER_BUTTON_RELEASED) {
+                    l.onEvent(e);
+                }
+                break;
+            case SBV_MODE:
+                for (ILoomoBaseStateListener l : channel_SBV_MODE) {
+                    l.onEvent(e);
+                }
+                break;
+            case ROBOT_MODE:
+                for (ILoomoBaseStateListener l : channel_ROBOT_MODE) {
+                    l.onEvent(e);
+                }
+                break;
+            case PITCH_LOCK:
+                for (ILoomoBaseStateListener l : channel_PITCH_LOCK) {
+                    l.onEvent(e);
+                }
+                break;
+            case PITCH_UNLOCK:
+                for (ILoomoBaseStateListener l : channel_PITCH_UNLOCK) {
+                    l.onEvent(e);
+                }
+                break;
+            case YAW_LOCK:
+                for (ILoomoBaseStateListener l : channel_YAW_LOCK) {
+                    l.onEvent(e);
+                }
+                break;
+            case YAW_UNLOCK:
+                for (ILoomoBaseStateListener l : channel_YAW_UNLOCK) {
+                    l.onEvent(e);
+                }
+                break;
+            case STEP_ON:
+                for (ILoomoBaseStateListener l : channel_STEP_ON) {
+                    l.onEvent(e);
+                }
+                break;
+            case STEP_OFF:
+                for (ILoomoBaseStateListener l : channel_STEP_OFF) {
+                    l.onEvent(e);
+                }
+                break;
+            case LIFT_UP:
+                for (ILoomoBaseStateListener l : channel_LIFT_UP) {
+                    l.onEvent(e);
+                }
+                break;
+            case PUT_DOWN:
+                for (ILoomoBaseStateListener l : channel_PUT_DOWN) {
+                    l.onEvent(e);
+                }
+                break;
+            case PUSHING:
+                for (ILoomoBaseStateListener l : channel_PUSHING) {
+                    l.onEvent(e);
+                }
+                break;
+            case PUSH_RELEASE:
+                for (ILoomoBaseStateListener l : channel_PUSH_RELEASE) {
+                    l.onEvent(e);
+                }
+                break;
+            case BASE_LOCK:
+                for (ILoomoBaseStateListener l : channel_BASE_LOCK) {
+                    l.onEvent(e);
+                }
+                break;
+            case BASE_UNLOCK:
+                for (ILoomoBaseStateListener l : channel_BASE_UNLOCK) {
+                    l.onEvent(e);
+                }
+                break;
+            case STAND_UP:
+                for (ILoomoBaseStateListener l : channel_STAND_UP) {
+                    l.onEvent(e);
+                }
+                break;
+            default:
+                Log.e(TAG,"Wow, somting is wrong with the Segway documentation");
+                new IllegalArgumentException("Something strange happend");
+        }
+    }
+
+    //****************************************************************************************************
 
     /**
      * Perhaps there is a better way to do (
@@ -76,9 +329,11 @@ public class LoomoBaseStateManager {
         private static final String TAG = "LoomoBroadcastReceiver";
         // First I have to to setup the Events I am interested (We use the Android IntentFilter)
         private IntentFilter filter;
+        private ILoomoBaseStateObserver mgr;
 
-        public LoomoBroadcastReceiver(IntentFilter f) {
+        public LoomoBroadcastReceiver(ILoomoBaseStateObserver m,IntentFilter f) {
             filter = f;
+            mgr = m;
             initListOfEvents();
         }
 
@@ -147,6 +402,7 @@ public class LoomoBaseStateManager {
                     Log.e(TAG,"Wow, somting is wrong with the Segway documentation");
                     new IllegalArgumentException("Something strange happend");
             }
+            mgr.notifyListener(intent.getAction());
         }
 
         private void initListOfEvents(){
@@ -172,8 +428,6 @@ public class LoomoBaseStateManager {
             filter.addAction(STAND_UP);
             Log.i(TAG,"Set Filters done");
         }
-
-
     }
 
 }
