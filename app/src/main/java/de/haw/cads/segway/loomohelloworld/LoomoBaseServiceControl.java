@@ -94,14 +94,14 @@ public class LoomoBaseServiceControl {
         Log.i(TAG, "Setting Control Mode to Navigation done");
 
     }
-    public static LoomoBaseServiceControl getInstance(Context c) {
+    public static LoomoBaseServiceControl getInstance(Context ctx) {
         Log.i(TAG, "Try to catch instance...need context");
         LoomoBaseServiceControl result = instance;
         if (result == null) {
             synchronized (mutex) {
                 result = instance;
                 if (result == null)
-                    instance = result = new LoomoBaseServiceControl(c);
+                    instance = result = new LoomoBaseServiceControl(ctx);
             }
         }
         Log.i(TAG, "Leave get Instance");
