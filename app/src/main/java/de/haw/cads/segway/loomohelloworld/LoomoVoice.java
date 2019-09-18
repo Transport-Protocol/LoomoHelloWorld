@@ -14,12 +14,12 @@ public class LoomoVoice implements ITextToSpeechServiceListener,Runnable {
             isNotReady = false;
             notifyAll();
             Log.i(TAG, "The Speaker is initialized");
-
     }
 
     public LoomoVoice(){
 
     }
+
     public synchronized void speak(String txt){
         if(isNotReady) {
             Log.e(TAG, "Not ready, we can not say " + txt);
@@ -30,7 +30,6 @@ public class LoomoVoice implements ITextToSpeechServiceListener,Runnable {
         } catch (InterruptedException ex) {
             Log.e(TAG, ex.toString());
         }
-
     }
 
     public synchronized void speakStart(String txt)  {
@@ -39,21 +38,17 @@ public class LoomoVoice implements ITextToSpeechServiceListener,Runnable {
                 Log.i(TAG, "Wait for Text to Speech");
                 wait();
                 Log.i(TAG, "We can read");
-
             } catch (InterruptedException ex) {
                 Thread.currentThread().interrupt();
                 Log.e(TAG, ex.toString());
             }
-
         }
         try {
             speaker.speakText(txt);
         } catch (InterruptedException ex) {
             Log.e(TAG, ex.toString());
         }
-
     }
-
 
     @Override
     public void run() {

@@ -17,16 +17,22 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "Start app");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         Log.i(TAG, "Start Loomo Base Service Control");
+
+        // Setup Listener for Loomo Events
         LoomoBaseServiceControl.getInstance(this.getApplicationContext());
         stateObserver = LoomoBaseStateManager.getInstance(this.getApplicationContext());
-        LoomoVoice aTextReader = new LoomoVoice();
+
+        // Create Loomos Voice
+        LoomoVoice voice = new LoomoVoice();
+        // Add Text to Speech to Voice
         txtToSpeechManager = LoomoTxtToSpeechManager.getInstance(this.getApplicationContext());
-        txtToSpeechManager.registerListener(aTextReader);
-        // Read some text
-        new Thread(aTextReader).start();    // Perhaps it is a good idea to use a thread for Speech output
-        aTextReader.speak("Hallo Du!"); // Text to Speech is an asynchron service. Here is the proof.
+        txtToSpeechManager.registerListener(voice);
+
+
+        // Say some text ->
+        new Thread(voice).start();    // Perhaps it is a good idea to use a thread for Speech output
+        // --> voice.speak("Hallo Du!"); // Text to Speech is an asynchron service. Here is the proof.
 
         Log.i(TAG, "Loomo Started..............................................");
     }

@@ -114,8 +114,8 @@ public class LoomoTxtToSpeechManager implements OnInitListener, INeedIntegration
             }
         });
     }
-    public synchronized void speakText(String txt) {
 
+    public synchronized void speakText(String txt) {
             Log.d(TAG, "Speaker try to say: " + txt);
             tts_context.speak(txt, QUEUE_FLUSH, null);
     }
