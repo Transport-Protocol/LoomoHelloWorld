@@ -10,8 +10,8 @@ import android.util.Log;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-    private LoomoBaseServiceControl aLoomoBaseServiceControl;
-    private LoomoBaseStateManager aLoomoBaseStateManager;
+    private LoomoBaseServiceControl baseServiceControl;
+    private ILoomoBaseStateObserver stateObserver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         Log.i(TAG, "Start Loomo Base Service Control");
-        aLoomoBaseServiceControl = LoomoBaseServiceControl.getInstance(this);
-        aLoomoBaseStateManager = LoomoBaseStateManager.getInstance(this);
+        baseServiceControl = LoomoBaseServiceControl.getInstance(this);
+        stateObserver = LoomoBaseStateManager.getInstance(this);
     }
 }

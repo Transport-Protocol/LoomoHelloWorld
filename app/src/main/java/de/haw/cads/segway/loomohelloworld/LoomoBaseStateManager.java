@@ -15,7 +15,7 @@ import java.util.List;
 // @TODO We should add an Observer Pattern, to create a listener structure
 public class LoomoBaseStateManager implements ILoomoBaseStateObserver {
     private static final String TAG = "LoomoBaseStateManager";
-    private static volatile LoomoBaseStateManager instance;
+    private static volatile ILoomoBaseStateObserver instance;
     private static Object mutex = new Object();
 
 
@@ -65,8 +65,8 @@ public class LoomoBaseStateManager implements ILoomoBaseStateObserver {
         // Perhaps we need something here
     }
 
-    public static LoomoBaseStateManager getInstance(Context c) {
-        LoomoBaseStateManager result = instance;
+    public static ILoomoBaseStateObserver getInstance(Context c) {
+        ILoomoBaseStateObserver result = instance;
 
         if (result == null) {
             synchronized (mutex) {
