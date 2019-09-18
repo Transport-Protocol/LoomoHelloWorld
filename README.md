@@ -1,6 +1,8 @@
 ## History 
 20190917 Init project    
 20190918 Initial APK Setup     
+20190918 Add Base Service
+20190918 Setup an Event Observer  -> ILoomoBaseStateObserver
 
 ## Prepare
 Follow the steps of the Segway Documentation: [External Segway](https://developer.segwayrobotics.com/developer/documents/setup-developing-environment.html)
