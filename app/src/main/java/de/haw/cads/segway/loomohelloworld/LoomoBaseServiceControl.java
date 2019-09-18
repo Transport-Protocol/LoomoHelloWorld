@@ -8,19 +8,15 @@ import android.content.Context;
 import android.util.Log;
 
 import com.segway.robot.algo.Pose2D;
-import com.segway.robot.algo.PoseVLS;
-import com.segway.robot.algo.VLSPoseListener;
 import com.segway.robot.algo.minicontroller.CheckPoint;
 import com.segway.robot.algo.minicontroller.CheckPointStateListener;
-import com.segway.robot.algo.minicontroller.ObstacleStateChangedListener;
 import com.segway.robot.sdk.base.bind.ServiceBinder;
 import com.segway.robot.sdk.locomotion.sbv.Base;
-import com.segway.robot.sdk.locomotion.sbv.StartVLSListener;
 
 /**
  * An Singleton to focus on an Control App System
  */
-public class LoomoBaseServiceControl {
+public class LoomoBaseServiceControl implements INeedIntegrationInLoomoStateMachine {
     // Singleton tuff
     private static final String TAG = "LoomoBaseServiceControl";
 
@@ -107,8 +103,8 @@ public class LoomoBaseServiceControl {
         Log.i(TAG, "Leave get Instance");
         return result;
     }
-
-    public void teardownLoomoBaseServiceControl() {
+    @Override
+    public void teardown() {
         Log.i(TAG, "Try to Teardown");
         if (instance == null) {
             throw new IllegalStateException("LoomoBaseServiceControl instance not initialized yet");
@@ -117,6 +113,11 @@ public class LoomoBaseServiceControl {
         this.loomoBase = null;
         instance = null;
         Log.i(TAG, "Teardown done");
+    }
+
+    @Override
+    public void onBreak() {
+
     }
 
 }

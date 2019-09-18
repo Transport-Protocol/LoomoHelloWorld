@@ -13,7 +13,7 @@ import java.util.List;
  * Main System for Loomo Events
  */
 // @TODO We should add an Observer Pattern, to create a listener structure
-public class LoomoBaseStateManager implements ILoomoBaseStateObserver {
+public class LoomoBaseStateManager implements ILoomoBaseStateObserver,INeedIntegrationInLoomoStateMachine {
     private static final String TAG = "LoomoBaseStateManager";
     private static volatile ILoomoBaseStateObserver instance;
     private static Object mutex = new Object();
@@ -41,25 +41,25 @@ public class LoomoBaseStateManager implements ILoomoBaseStateObserver {
     private static final String BASE_UNLOCK = "com.segway.robot.action.BASE_UNLOCK";
     private static final String STAND_UP = "com.segway.robot.action.STAND_UP";
 
-    public static List<ILoomoBaseStateListener> channel_BATTERY_CHANGED = new ArrayList<>();
-    public static List<ILoomoBaseStateListener> channel_POWER_DOWN = new ArrayList<>();
-    public static List<ILoomoBaseStateListener> channel_POWER_BUTTON_PRESSED = new ArrayList<>();
-    public static List<ILoomoBaseStateListener> channel_POWER_BUTTON_RELEASED = new ArrayList<>();
-    public static List<ILoomoBaseStateListener> channel_SBV_MODE = new ArrayList<>();
-    public static List<ILoomoBaseStateListener> channel_ROBOT_MODE = new ArrayList<>();
-    public static List<ILoomoBaseStateListener> channel_PITCH_LOCK = new ArrayList<>();
-    public static List<ILoomoBaseStateListener> channel_PITCH_UNLOCK = new ArrayList<>();
-    public static List<ILoomoBaseStateListener> channel_YAW_LOCK= new ArrayList<>();
-    public static List<ILoomoBaseStateListener> channel_YAW_UNLOCK = new ArrayList<>();
-    public static List<ILoomoBaseStateListener> channel_STEP_ON = new ArrayList<>();
-    public static List<ILoomoBaseStateListener> channel_STEP_OFF = new ArrayList<>();
-    public static List<ILoomoBaseStateListener> channel_LIFT_UP = new ArrayList<>();
-    public static List<ILoomoBaseStateListener> channel_PUT_DOWN = new ArrayList<>();
-    public static List<ILoomoBaseStateListener> channel_PUSHING = new ArrayList<>();
-    public static List<ILoomoBaseStateListener> channel_PUSH_RELEASE = new ArrayList<>();
-    public static List<ILoomoBaseStateListener> channel_BASE_LOCK = new ArrayList<>();
-    public static List<ILoomoBaseStateListener> channel_BASE_UNLOCK = new ArrayList<>();
-    public static List<ILoomoBaseStateListener> channel_STAND_UP = new ArrayList<>();
+    private static List<ILoomoBaseStateListener> channel_BATTERY_CHANGED = new ArrayList<>();
+    private static List<ILoomoBaseStateListener> channel_POWER_DOWN = new ArrayList<>();
+    private static List<ILoomoBaseStateListener> channel_POWER_BUTTON_PRESSED = new ArrayList<>();
+    private static List<ILoomoBaseStateListener> channel_POWER_BUTTON_RELEASED = new ArrayList<>();
+    private static List<ILoomoBaseStateListener> channel_SBV_MODE = new ArrayList<>();
+    private static List<ILoomoBaseStateListener> channel_ROBOT_MODE = new ArrayList<>();
+    private static List<ILoomoBaseStateListener> channel_PITCH_LOCK = new ArrayList<>();
+    private static List<ILoomoBaseStateListener> channel_PITCH_UNLOCK = new ArrayList<>();
+    private static List<ILoomoBaseStateListener> channel_YAW_LOCK= new ArrayList<>();
+    private static List<ILoomoBaseStateListener> channel_YAW_UNLOCK = new ArrayList<>();
+    private static List<ILoomoBaseStateListener> channel_STEP_ON = new ArrayList<>();
+    private static List<ILoomoBaseStateListener> channel_STEP_OFF = new ArrayList<>();
+    private static List<ILoomoBaseStateListener> channel_LIFT_UP = new ArrayList<>();
+    private static List<ILoomoBaseStateListener> channel_PUT_DOWN = new ArrayList<>();
+    private static List<ILoomoBaseStateListener> channel_PUSHING = new ArrayList<>();
+    private static List<ILoomoBaseStateListener> channel_PUSH_RELEASE = new ArrayList<>();
+    private static List<ILoomoBaseStateListener> channel_BASE_LOCK = new ArrayList<>();
+    private static List<ILoomoBaseStateListener> channel_BASE_UNLOCK = new ArrayList<>();
+    private static List<ILoomoBaseStateListener> channel_STAND_UP = new ArrayList<>();
 
     private LoomoBaseStateManager() {
         // Perhaps we need something here
@@ -318,6 +318,16 @@ public class LoomoBaseStateManager implements ILoomoBaseStateObserver {
                 Log.e(TAG,"Wow, somting is wrong with the Segway documentation");
                 new IllegalArgumentException("Something strange happend");
         }
+    }
+
+    @Override
+    public void teardown() {
+
+    }
+
+    @Override
+    public void onBreak() {
+
     }
 
     //****************************************************************************************************
