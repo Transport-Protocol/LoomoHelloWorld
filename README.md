@@ -6,7 +6,7 @@
 
 ## Prepare
 Follow the steps of the Segway Documentation: [External Segway](https://developer.segwayrobotics.com/developer/documents/setup-developing-environment.html)
-Do not miss to add the following lines in your *build.gradle* file of you app (not project):
+Do not miss to add the following lines in your *build.gradle* file (of your app not your project):
 
 ```$xslt
     implementation 'com.segway.robot:visionsdk:0.6.547'
