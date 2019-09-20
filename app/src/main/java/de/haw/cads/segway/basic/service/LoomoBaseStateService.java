@@ -1,4 +1,4 @@
-package de.haw.cads.segway.loomohelloworld;
+package de.haw.cads.segway.basic.service;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

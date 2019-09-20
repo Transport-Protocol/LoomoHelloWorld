@@ -1,7 +1,10 @@
-package de.haw.cads.segway.loomohelloworld;
+package de.haw.cads.segway.basic.service;
 
 import android.content.Context;
 import android.util.Log;
+import de.haw.cads.segway.basic.util.ITextToSpeechServiceListener;
+import de.haw.cads.segway.basic.util.LoomoMediaPlayerService;
+import de.haw.cads.segway.basic.util.LoomoTxtToSpeechService;
 
 /**
  * It is not needed to setup a singleton, anyway the txt to speech is

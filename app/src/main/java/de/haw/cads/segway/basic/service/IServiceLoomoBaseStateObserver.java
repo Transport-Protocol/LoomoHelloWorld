@@ -1,4 +1,4 @@
-package de.haw.cads.segway.loomohelloworld;
+package de.haw.cads.segway.basic.service;
 
 public interface IServiceLoomoBaseStateObserver extends IServiceNeedIntegrationInLoomoStateMachine {
     public void notifyListener(String e);

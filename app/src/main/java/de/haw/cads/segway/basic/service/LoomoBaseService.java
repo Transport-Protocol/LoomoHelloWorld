@@ -2,7 +2,7 @@
  * (c) 2019  HAW Hamburg CaDS Martin Becke Martin.Becke@HAW-Hamburg.de
  *
  */
-package de.haw.cads.segway.loomohelloworld;
+package de.haw.cads.segway.basic.service;
 
 import android.content.Context;
 import android.util.Log;
@@ -16,14 +16,14 @@ import com.segway.robot.sdk.locomotion.sbv.Base;
 /**
  * An Singleton to focus on an Control App System
  */
-public class LoomoBaseServiceService implements IServiceNeedIntegrationInLoomoStateMachine {
+public class LoomoBaseService implements IServiceNeedIntegrationInLoomoStateMachine {
     // Singleton tuff
-    private static final String TAG = "LoomoBaseServiceService";
+    private static final String TAG = "LoomoBaseService";
 
     // Options
     private static boolean ControlModeNavigationSwitch = false;
 
-    private static volatile LoomoBaseServiceService instance;
+    private static volatile LoomoBaseService instance;
     private static Object mutex = new Object();
 
     // Loomo stuff
@@ -34,7 +34,7 @@ public class LoomoBaseServiceService implements IServiceNeedIntegrationInLoomoSt
     private float lastXPosition = 0f;
     private float lastYPosition = 0f;
 
-    private LoomoBaseServiceService(Context c) {
+    private LoomoBaseService(Context c) {
         this.context = c;
         initLoomo();
     }
@@ -90,14 +90,14 @@ public class LoomoBaseServiceService implements IServiceNeedIntegrationInLoomoSt
         Log.i(TAG, "Setting Control Mode to Navigation done");
 
     }
-    public static LoomoBaseServiceService getInstance(Context ctx) {
+    public static LoomoBaseService getInstance(Context ctx) {
         Log.i(TAG, "Try to catch instance...need context");
-        LoomoBaseServiceService result = instance;
+        LoomoBaseService result = instance;
         if (result == null) {
             synchronized (mutex) {
                 result = instance;
                 if (result == null)
-                    instance = result = new LoomoBaseServiceService(ctx);
+                    instance = result = new LoomoBaseService(ctx);
             }
         }
         Log.i(TAG, "Leave get Instance");
@@ -107,7 +107,7 @@ public class LoomoBaseServiceService implements IServiceNeedIntegrationInLoomoSt
     public void teardown() {
         Log.i(TAG, "Try to Teardown");
         if (instance == null) {
-            throw new IllegalStateException("LoomoBaseServiceService instance not initialized yet");
+            throw new IllegalStateException("LoomoBaseService instance not initialized yet");
         }
         this.loomoBase.unbindService(); // @note a unbind need an bind
         this.loomoBase = null;

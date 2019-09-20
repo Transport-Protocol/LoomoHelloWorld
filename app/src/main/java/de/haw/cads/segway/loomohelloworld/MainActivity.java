@@ -9,6 +9,10 @@ import android.widget.Switch;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import de.haw.cads.segway.basic.service.IServiceLoomoBaseStateObserver;
+import de.haw.cads.segway.basic.service.LoomoBaseService;
+import de.haw.cads.segway.basic.service.LoomoBaseStateService;
+import de.haw.cads.segway.basic.service.LoomoVoiceService;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -37,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
                 if (isChecked) {
 
                 } else {
-                    /* // Turn off the app
+                    /*
+                       // Turn off the app
                        code to push it in the back
                        Intent homeIntent = new Intent(Intent.ACTION_MAIN);
                        homeIntent.addCategory( Intent.CATEGORY_HOME );
@@ -54,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Setup Listener for Loomo Events
-        LoomoBaseServiceService.getInstance(this.getApplicationContext());
+        LoomoBaseService.getInstance(this.getApplicationContext());
         loomoStateObserver = LoomoBaseStateService.getInstance(this.getApplicationContext());
 
         // Create Loomos Voice

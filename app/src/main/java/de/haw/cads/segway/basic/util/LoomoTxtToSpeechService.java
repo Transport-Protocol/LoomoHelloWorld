@@ -1,4 +1,4 @@
-package de.haw.cads.segway.loomohelloworld;
+package de.haw.cads.segway.basic.util;
 
 import android.content.Context;
 import android.speech.tts.TextToSpeech;
@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.segway.robot.sdk.base.bind.ServiceBinder;
 import com.segway.robot.sdk.voice.Speaker;
+import de.haw.cads.segway.basic.service.IServiceLoomoSpeak;
 
 import java.util.ArrayList;
 import java.util.List;

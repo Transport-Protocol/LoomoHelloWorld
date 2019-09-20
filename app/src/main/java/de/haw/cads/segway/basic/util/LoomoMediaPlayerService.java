@@ -1,12 +1,11 @@
-package de.haw.cads.segway.loomohelloworld;
+package de.haw.cads.segway.basic.util;
 
 import android.content.Context;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.util.Log;
+import de.haw.cads.segway.basic.service.IServiceNeedIntegrationInLoomoStateMachine;
 
-public class LoomoMediaPlayerService implements IServiceNeedIntegrationInLoomoStateMachine, ILoomoPlay{
+public class LoomoMediaPlayerService implements IServiceNeedIntegrationInLoomoStateMachine, ILoomoPlay {
     private static final String TAG = "LoomoMediaPlayerService";
     private static volatile LoomoMediaPlayerService instance;
     private static Object mutex = new Object();
