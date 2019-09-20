@@ -1,4 +1,4 @@
-package de.haw.cads.segway.basic.util;
+package de.haw.cads.segway.basic.service.util;
 
 import de.haw.cads.segway.basic.service.IServiceNeedIntegrationInLoomoStateMachine;
 import de.haw.cads.segway.basic.service.IServiceLoomoSpeak;

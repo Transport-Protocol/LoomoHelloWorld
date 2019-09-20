@@ -1,4 +1,4 @@
-package de.haw.cads.segway.basic.util;
+package de.haw.cads.segway.basic.service.util;
 
 import android.content.Context;
 import android.speech.tts.TextToSpeech;
