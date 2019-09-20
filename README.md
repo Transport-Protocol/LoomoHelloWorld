@@ -2,7 +2,8 @@
 20190917 Init project    
 20190918 Initial APK Setup     
 20190918 Add Base Service    
-20190918 Setup an Event Observer  -> ILoomoBaseStateObserver
+20190918 Setup an Event Observer  -> ILoomoBaseStateObserver     
+20190918 Add initial Voice Service (Text to Speech)    
 
 ## Prepare
 Follow the steps of the Segway Documentation: [External Segway](https://developer.segwayrobotics.com/developer/documents/setup-developing-environment.html)
