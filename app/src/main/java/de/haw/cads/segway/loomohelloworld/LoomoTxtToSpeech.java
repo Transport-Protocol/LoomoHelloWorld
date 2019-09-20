@@ -4,7 +4,6 @@ import android.content.Context;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 
-import android.widget.Toast;
 import com.segway.robot.sdk.base.bind.ServiceBinder;
 import com.segway.robot.sdk.voice.Speaker;
 
@@ -18,9 +17,9 @@ import static android.speech.tts.TextToSpeech.*;
  * Note: That is interesting: At Least Loomo use Android TextToSpeech Function. In the end it is just a question of output.
  * Use a example from https://www.tutorialspoint.com/android/android_text_to_speech.htm as first setup
  */
-public class LoomoTxtToSpeechManager implements OnInitListener, INeedIntegrationInLoomoStateMachine, ILoomoSpeak {
-    private static final String TAG = "LoomoTxtToSpeechManager";
-    private static volatile LoomoTxtToSpeechManager instance;
+public class LoomoTxtToSpeech implements OnInitListener, INeedIntegrationInLoomoStateMachine, ILoomoSpeak {
+    private static final String TAG = "LoomoTxtToSpeech";
+    private static volatile LoomoTxtToSpeech instance;
     private static Object mutex = new Object();
     private static Object condition = new Object();
 
@@ -30,7 +29,7 @@ public class LoomoTxtToSpeechManager implements OnInitListener, INeedIntegration
 
     private static List<ITextToSpeechServiceListener> listenerList = new ArrayList<>();
 
-    private LoomoTxtToSpeechManager() {
+    private LoomoTxtToSpeech() {
         init();
     }
 
@@ -44,15 +43,14 @@ public class LoomoTxtToSpeechManager implements OnInitListener, INeedIntegration
         }
     }
 
-
-    public static LoomoTxtToSpeechManager getInstance(Context ctx) {
-        LoomoTxtToSpeechManager result = instance;
+    public static LoomoTxtToSpeech getInstance(Context ctx) {
+        LoomoTxtToSpeech result = instance;
         if (result == null) {
             synchronized (mutex) {
                 result = instance;
                 if (result == null) {
                     context = ctx;
-                    instance = result = new LoomoTxtToSpeechManager();
+                    instance = result = new LoomoTxtToSpeech();
 
                     Log.i(TAG, "Created instance");
                 }
@@ -70,7 +68,6 @@ public class LoomoTxtToSpeechManager implements OnInitListener, INeedIntegration
                 tts_context.setLanguage(Locale.GERMAN);
             else if (tts_context.isLanguageAvailable(Locale.US) == TextToSpeech.LANG_AVAILABLE)
                 tts_context.setLanguage(Locale.US);
-
 
             // Notify all
             for (ITextToSpeechServiceListener l : listenerList) {
@@ -92,6 +89,7 @@ public class LoomoTxtToSpeechManager implements OnInitListener, INeedIntegration
 
     @Override
     public void teardown() {
+        tts_context.shutdown();
         Speaker.getInstance().unbindService();
     }
 

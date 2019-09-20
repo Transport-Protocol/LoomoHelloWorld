@@ -1,11 +1,18 @@
 package de.haw.cads.segway.loomohelloworld;
 
+import android.content.Context;
 import android.util.Log;
 
+/**
+ * It is not needed to setup a singleton, anyway the txt to speech is
+ */
 public class LoomoVoice implements ITextToSpeechServiceListener,Runnable {
     private static final String TAG = "LoomoVoice";
     private boolean isNotReady = true;
+    private Context context;
+
     ILoomoSpeak speaker;
+    LoomoTxtToSpeech txtToSpeechManager;
 
     @Override
     public synchronized void onTextToSpeechIsReady(ILoomoSpeak s) {
@@ -16,8 +23,11 @@ public class LoomoVoice implements ITextToSpeechServiceListener,Runnable {
             Log.i(TAG, "The Speaker is initialized");
     }
 
-    public LoomoVoice(){
-
+    public LoomoVoice(Context ctx){
+        context = ctx;
+        // Add Text to Speech to Voice
+        txtToSpeechManager = LoomoTxtToSpeech.getInstance(context);
+        txtToSpeechManager.registerListener(this);
     }
 
     public synchronized void speak(String txt){
@@ -52,6 +62,7 @@ public class LoomoVoice implements ITextToSpeechServiceListener,Runnable {
 
     @Override
     public void run() {
-        speakStart("Los geht es...!");
+        LoomoMediaPlayer.getInstance(context).play();
+        this.speakStart("Los geht es...!");
     }
 }

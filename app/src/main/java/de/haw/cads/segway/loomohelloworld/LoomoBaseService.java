@@ -16,14 +16,14 @@ import com.segway.robot.sdk.locomotion.sbv.Base;
 /**
  * An Singleton to focus on an Control App System
  */
-public class LoomoBaseServiceControl implements INeedIntegrationInLoomoStateMachine {
+public class LoomoBaseService implements INeedIntegrationInLoomoStateMachine {
     // Singleton tuff
-    private static final String TAG = "LoomoBaseServiceControl";
+    private static final String TAG = "LoomoBaseService";
 
     // Options
     private static boolean ControlModeNavigationSwitch = false;
 
-    private static volatile LoomoBaseServiceControl instance;
+    private static volatile LoomoBaseService instance;
     private static Object mutex = new Object();
 
     // Loomo stuff
@@ -34,7 +34,7 @@ public class LoomoBaseServiceControl implements INeedIntegrationInLoomoStateMach
     private float lastXPosition = 0f;
     private float lastYPosition = 0f;
 
-    private LoomoBaseServiceControl(Context c) {
+    private LoomoBaseService(Context c) {
         this.context = c;
         initLoomo();
     }
@@ -90,14 +90,14 @@ public class LoomoBaseServiceControl implements INeedIntegrationInLoomoStateMach
         Log.i(TAG, "Setting Control Mode to Navigation done");
 
     }
-    public static LoomoBaseServiceControl getInstance(Context ctx) {
+    public static LoomoBaseService getInstance(Context ctx) {
         Log.i(TAG, "Try to catch instance...need context");
-        LoomoBaseServiceControl result = instance;
+        LoomoBaseService result = instance;
         if (result == null) {
             synchronized (mutex) {
                 result = instance;
                 if (result == null)
-                    instance = result = new LoomoBaseServiceControl(ctx);
+                    instance = result = new LoomoBaseService(ctx);
             }
         }
         Log.i(TAG, "Leave get Instance");
@@ -107,7 +107,7 @@ public class LoomoBaseServiceControl implements INeedIntegrationInLoomoStateMach
     public void teardown() {
         Log.i(TAG, "Try to Teardown");
         if (instance == null) {
-            throw new IllegalStateException("LoomoBaseServiceControl instance not initialized yet");
+            throw new IllegalStateException("LoomoBaseService instance not initialized yet");
         }
         this.loomoBase.unbindService(); // @note a unbind need an bind
         this.loomoBase = null;

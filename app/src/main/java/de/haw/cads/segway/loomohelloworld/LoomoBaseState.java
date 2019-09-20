@@ -13,8 +13,8 @@ import java.util.List;
  * Main System for Loomo Events
  */
 // @TODO We should add an Observer Pattern, to create a listener structure
-public class LoomoBaseStateManager implements ILoomoBaseStateObserver,INeedIntegrationInLoomoStateMachine {
-    private static final String TAG = "LoomoBaseStateManager";
+public class LoomoBaseState implements ILoomoBaseStateObserver,INeedIntegrationInLoomoStateMachine {
+    private static final String TAG = "LoomoBaseState";
     private static volatile ILoomoBaseStateObserver instance;
     private static Object mutex = new Object();
 
@@ -61,7 +61,7 @@ public class LoomoBaseStateManager implements ILoomoBaseStateObserver,INeedInteg
     private static List<ILoomoBaseStateListener> channel_BASE_UNLOCK = new ArrayList<>();
     private static List<ILoomoBaseStateListener> channel_STAND_UP = new ArrayList<>();
 
-    private LoomoBaseStateManager() {
+    private LoomoBaseState() {
         // Perhaps we need something here
     }
 
@@ -73,7 +73,7 @@ public class LoomoBaseStateManager implements ILoomoBaseStateObserver,INeedInteg
                 result = instance;
                 if (result == null) {
                     IntentFilter filter = new IntentFilter();
-                    instance = result = new LoomoBaseStateManager();
+                    instance = result = new LoomoBaseState();
                     c.getApplicationContext().registerReceiver(new LoomoBroadcastReceiver(instance,filter), filter);
                 }
 
