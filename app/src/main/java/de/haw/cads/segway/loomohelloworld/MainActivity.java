@@ -12,11 +12,12 @@ import android.util.Log;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-    private ILoomoBaseStateObserver stateObserver;
-    private LoomoTxtToSpeech txtToSpeechManager;
+    private IServiceLoomoBaseStateObserver loomoStateObserver;
+    private LoomoVoiceService voice;
 
     private void teardown(){
-        txtToSpeechManager.teardown();
+        voice.teardown();
+        loomoStateObserver.teardown();
     }
 
 
@@ -36,12 +37,14 @@ public class MainActivity extends AppCompatActivity {
                 if (isChecked) {
 
                 } else {
-                    // // Turn off the app
-                    // code to push it in the back
-                    // Intent homeIntent = new Intent(Intent.ACTION_MAIN);
-                    // homeIntent.addCategory( Intent.CATEGORY_HOME );
-                    // homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    // startActivity(homeIntent);
+                    /* // Turn off the app
+                       code to push it in the back
+                       Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+                       homeIntent.addCategory( Intent.CATEGORY_HOME );
+                       homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                       startActivity(homeIntent);
+                     */
+                    Log.d(TAG,"System exit now...");
                     teardown();
                     android.os.Process.killProcess(android.os.Process.myPid());
                     System.exit(1);
@@ -51,11 +54,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Setup Listener for Loomo Events
-        LoomoBaseService.getInstance(this.getApplicationContext());
-        stateObserver = LoomoBaseState.getInstance(this.getApplicationContext());
+        LoomoBaseServiceService.getInstance(this.getApplicationContext());
+        loomoStateObserver = LoomoBaseStateService.getInstance(this.getApplicationContext());
 
         // Create Loomos Voice
-        LoomoVoice voice = new LoomoVoice(this.getApplicationContext());
+        voice = new LoomoVoiceService(this.getApplicationContext());
 
         // Say some text ->
         new Thread(voice).start();    // Perhaps it is a good idea to use a thread for Speech output

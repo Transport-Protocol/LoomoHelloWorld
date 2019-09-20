@@ -25,14 +25,45 @@ Note: Unknown issue: emoji raise an error (Not investigated yet). Current workar
  // implementation 'com.segway.robot:emoji:0.1.28'
 ```
 ## App Details
-TBD
+### LoomoBaseService     
+General bind to the plattform
+### LommoBaseState 
+General Service to listen for Loomo events     
+```$xslt
+   LoomoBaseState.BATTERY_CHANGED       // "com.segway.robot.action.BATTERY_CHANGED";
+   LoomoBaseState.POWER_DOWN            //"com.segway.robot.action.POWER_DOWN";
+   LoomoBaseState.POWER_BUTTON_PRESSED  // "com.segway.robot.action.POWER_BUTTON_PRESSED";
+   LoomoBaseState.POWER_BUTTON_RELEASED // "com.segway.robot.action.POWER_BUTTON_RELEASED";
+   LoomoBaseState.SBV_MODE              // "com.segway.robot.action.TO_SBV";
+   LoomoBaseState.ROBOT_MODE            // "com.segway.robot.action.TO_ROBOT";
+   LoomoBaseState.PITCH_LOCK            // "com.segway.robot.action.PITCH_LOCK";
+   LoomoBaseState.PITCH_UNLOCK          // "com.segway.robot.action.PITCH_UNLOCK";
+   LoomoBaseState.YAW_LOCK              // "com.segway.robot.action.YAW_LOCK";
+   LoomoBaseState.YAW_UNLOCK            // "com.segway.robot.action.YAW_UNLOCK";
+   LoomoBaseState.STEP_ON               // "com.segway.robot.action.STEP_ON";
+   LoomoBaseState.STEP_OFF              // "com.segway.robot.action.STEP_OFF";
+   LoomoBaseState.LIFT_UP               // "com.segway.robot.action.LIFT_UP";
+   LoomoBaseState.PUT_DOWN              // "com.segway.robot.action.PUT_DOWN";
+   LoomoBaseState.PUSHING               // "com.segway.robot.action.PUSHING";
+   LoomoBaseState.USH_RELEASE           // "com.segway.robot.action.PUSH_RELEASE";
+   LoomoBaseState.BASE_LOCK             // "com.segway.robot.action.BASE_LOCK";
+   LoomoBaseState.BASE_UNLOCK           // "com.segway.robot.action.BASE_UNLOCK";
+   LoomoBaseState.STAND_UP              // "com.segway.robot.action.STAND_UP";
+
+```
+### LoomoVoice 
+Basic Loomo Voice, will be extended with general Voice and Sound Actions.   
+TextToSpeech and Media Player is used for internal representation.     
+The setup of the TextToSpeech is async. Therefore a Runnable is used for initial sound. 
+
+
 
 ## Troubleshooting 
 
 * Important: Use ANDROID SDK 5.1   
 
 * Gradle Error Message: Execution failed for task ':app:transformClassesWithInstantRunForDebug'
-Somethimes after import File-> Invalidate Caches / Restart... is needed. 
+Sometimes after import File-> Invalidate Caches / Restart... is needed. 
 Seen in IntellJ after rebase. 
 
 * Gradle Error Message: SDK location not found. Define location with sdk.dir in the local.properties file or with an ANDROID_HOME environment variable.

@@ -17,9 +17,9 @@ import static android.speech.tts.TextToSpeech.*;
  * Note: That is interesting: At Least Loomo use Android TextToSpeech Function. In the end it is just a question of output.
  * Use a example from https://www.tutorialspoint.com/android/android_text_to_speech.htm as first setup
  */
-public class LoomoTxtToSpeech implements OnInitListener, INeedIntegrationInLoomoStateMachine, ILoomoSpeak {
-    private static final String TAG = "LoomoTxtToSpeech";
-    private static volatile LoomoTxtToSpeech instance;
+public class LoomoTxtToSpeechService implements OnInitListener, IServiceLoomoSpeak {
+    private static final String TAG = "LoomoTxtToSpeechService";
+    private static volatile LoomoTxtToSpeechService instance;
     private static Object mutex = new Object();
     private static Object condition = new Object();
 
@@ -29,7 +29,7 @@ public class LoomoTxtToSpeech implements OnInitListener, INeedIntegrationInLoomo
 
     private static List<ITextToSpeechServiceListener> listenerList = new ArrayList<>();
 
-    private LoomoTxtToSpeech() {
+    private LoomoTxtToSpeechService() {
         init();
     }
 
@@ -43,14 +43,14 @@ public class LoomoTxtToSpeech implements OnInitListener, INeedIntegrationInLoomo
         }
     }
 
-    public static LoomoTxtToSpeech getInstance(Context ctx) {
-        LoomoTxtToSpeech result = instance;
+    public static LoomoTxtToSpeechService getInstance(Context ctx) {
+        LoomoTxtToSpeechService result = instance;
         if (result == null) {
             synchronized (mutex) {
                 result = instance;
                 if (result == null) {
                     context = ctx;
-                    instance = result = new LoomoTxtToSpeech();
+                    instance = result = new LoomoTxtToSpeechService();
 
                     Log.i(TAG, "Created instance");
                 }

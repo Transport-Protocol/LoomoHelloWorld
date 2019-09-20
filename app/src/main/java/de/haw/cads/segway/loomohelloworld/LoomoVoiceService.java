@@ -6,16 +6,16 @@ import android.util.Log;
 /**
  * It is not needed to setup a singleton, anyway the txt to speech is
  */
-public class LoomoVoice implements ITextToSpeechServiceListener,Runnable {
-    private static final String TAG = "LoomoVoice";
+public class LoomoVoiceService implements IServiceNeedIntegrationInLoomoStateMachine, ITextToSpeechServiceListener,Runnable {
+    private static final String TAG = "LoomoVoiceService";
     private boolean isNotReady = true;
     private Context context;
 
-    ILoomoSpeak speaker;
-    LoomoTxtToSpeech txtToSpeechManager;
+    IServiceLoomoSpeak speaker;
+    LoomoTxtToSpeechService txtToSpeechManager;
 
     @Override
-    public synchronized void onTextToSpeechIsReady(ILoomoSpeak s) {
+    public synchronized void onTextToSpeechIsReady(IServiceLoomoSpeak s) {
             Log.i(TAG, "Set Speaker");
             speaker = s;
             isNotReady = false;
@@ -23,10 +23,10 @@ public class LoomoVoice implements ITextToSpeechServiceListener,Runnable {
             Log.i(TAG, "The Speaker is initialized");
     }
 
-    public LoomoVoice(Context ctx){
+    public LoomoVoiceService(Context ctx){
         context = ctx;
         // Add Text to Speech to Voice
-        txtToSpeechManager = LoomoTxtToSpeech.getInstance(context);
+        txtToSpeechManager = LoomoTxtToSpeechService.getInstance(context);
         txtToSpeechManager.registerListener(this);
     }
 
@@ -62,7 +62,21 @@ public class LoomoVoice implements ITextToSpeechServiceListener,Runnable {
 
     @Override
     public void run() {
-        LoomoMediaPlayer.getInstance(context).play();
+        LoomoMediaPlayerService.getInstance(context).play();
         this.speakStart("Los geht es...!");
+    }
+
+    @Override
+    public void teardown() {
+        LoomoMediaPlayerService.getInstance(context).teardown();
+        txtToSpeechManager.teardown();
+        speaker.teardown();
+    }
+
+    @Override
+    public void onBreak() {
+        LoomoMediaPlayerService.getInstance(context).onBreak();
+        txtToSpeechManager.onBreak();
+        speaker.onBreak();
     }
 }

@@ -1,28 +1,31 @@
 package de.haw.cads.segway.loomohelloworld;
 
 import android.content.Context;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.util.Log;
 
-public class LoomoMediaPlayer implements INeedIntegrationInLoomoStateMachine, ILoomoPlay{
-    private static final String TAG = "LoomoMediaPlayer";
-    private static volatile LoomoMediaPlayer instance;
+public class LoomoMediaPlayerService implements IServiceNeedIntegrationInLoomoStateMachine, ILoomoPlay{
+    private static final String TAG = "LoomoMediaPlayerService";
+    private static volatile LoomoMediaPlayerService instance;
     private static Object mutex = new Object();
     private static Context context;
     // The media player does the magic
-    MediaPlayer player = new MediaPlayer();
+    MediaPlayer player;
 
-    private LoomoMediaPlayer() {
+    private LoomoMediaPlayerService() {
+        player = new MediaPlayer();
     }
 
-    public static LoomoMediaPlayer getInstance(Context ctx) {
-        LoomoMediaPlayer result = instance;
+    public static LoomoMediaPlayerService getInstance(Context ctx) {
+        LoomoMediaPlayerService result = instance;
         if (result == null) {
             synchronized (mutex) {
                 result = instance;
                 if (result == null)
                     context = ctx;
-                    instance = result = new LoomoMediaPlayer();
+                    instance = result = new LoomoMediaPlayerService();
             }
         }
         return result;
@@ -34,13 +37,11 @@ public class LoomoMediaPlayer implements INeedIntegrationInLoomoStateMachine, IL
 
             String filename = "android.resource://" + context.getPackageName() + "/raw/w_drill";
 
-
             try { player.setDataSource(context, Uri.parse(filename)); } catch (Exception e) {}
             try {
                 player.prepare();
                 player.start();
             } catch (Exception e) {}
-
 
         } catch (Exception e) {
             e.printStackTrace();

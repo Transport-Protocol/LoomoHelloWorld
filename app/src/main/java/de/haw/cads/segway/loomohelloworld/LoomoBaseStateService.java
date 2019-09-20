@@ -13,33 +13,33 @@ import java.util.List;
  * Main System for Loomo Events
  */
 // @TODO We should add an Observer Pattern, to create a listener structure
-public class LoomoBaseState implements ILoomoBaseStateObserver,INeedIntegrationInLoomoStateMachine {
-    private static final String TAG = "LoomoBaseState";
-    private static volatile ILoomoBaseStateObserver instance;
+public class LoomoBaseStateService implements IServiceLoomoBaseStateObserver {
+    private static final String TAG = "LoomoBaseStateService";
+    private static volatile IServiceLoomoBaseStateObserver instance;
     private static Object mutex = new Object();
 
 
     // Loomo states -> Hope missed nothing
     // List got from https://developer.segwayrobotics.com/developer/documents/segway-robots-sdk.html
-    private static final String BATTERY_CHANGED = "com.segway.robot.action.BATTERY_CHANGED";
-    private static final String POWER_DOWN = "com.segway.robot.action.POWER_DOWN";
-    private static final String POWER_BUTTON_PRESSED = "com.segway.robot.action.POWER_BUTTON_PRESSED";
-    private static final String POWER_BUTTON_RELEASED = "com.segway.robot.action.POWER_BUTTON_RELEASED";
-    private static final String SBV_MODE = "com.segway.robot.action.TO_SBV";
-    private static final String ROBOT_MODE = "com.segway.robot.action.TO_ROBOT";
-    private static final String PITCH_LOCK = "com.segway.robot.action.PITCH_LOCK";
-    private static final String PITCH_UNLOCK = "com.segway.robot.action.PITCH_UNLOCK";
-    private static final String YAW_LOCK = "com.segway.robot.action.YAW_LOCK";
-    private static final String YAW_UNLOCK = "com.segway.robot.action.YAW_UNLOCK";
-    private static final String STEP_ON = "com.segway.robot.action.STEP_ON";
-    private static final String STEP_OFF = "com.segway.robot.action.STEP_OFF";
-    private static final String LIFT_UP = "com.segway.robot.action.LIFT_UP";
-    private static final String PUT_DOWN = "com.segway.robot.action.PUT_DOWN";
-    private static final String PUSHING = "com.segway.robot.action.PUSHING";
-    private static final String PUSH_RELEASE = "com.segway.robot.action.PUSH_RELEASE";
-    private static final String BASE_LOCK = "com.segway.robot.action.BASE_LOCK";
-    private static final String BASE_UNLOCK = "com.segway.robot.action.BASE_UNLOCK";
-    private static final String STAND_UP = "com.segway.robot.action.STAND_UP";
+    public static final String BATTERY_CHANGED = "com.segway.robot.action.BATTERY_CHANGED";
+    public static final String POWER_DOWN = "com.segway.robot.action.POWER_DOWN";
+    public static final String POWER_BUTTON_PRESSED = "com.segway.robot.action.POWER_BUTTON_PRESSED";
+    public static final String POWER_BUTTON_RELEASED = "com.segway.robot.action.POWER_BUTTON_RELEASED";
+    public static final String SBV_MODE = "com.segway.robot.action.TO_SBV";
+    public static final String ROBOT_MODE = "com.segway.robot.action.TO_ROBOT";
+    public static final String PITCH_LOCK = "com.segway.robot.action.PITCH_LOCK";
+    public static final String PITCH_UNLOCK = "com.segway.robot.action.PITCH_UNLOCK";
+    public static final String YAW_LOCK = "com.segway.robot.action.YAW_LOCK";
+    public static final String YAW_UNLOCK = "com.segway.robot.action.YAW_UNLOCK";
+    public static final String STEP_ON = "com.segway.robot.action.STEP_ON";
+    public static final String STEP_OFF = "com.segway.robot.action.STEP_OFF";
+    public static final String LIFT_UP = "com.segway.robot.action.LIFT_UP";
+    public static final String PUT_DOWN = "com.segway.robot.action.PUT_DOWN";
+    public static final String PUSHING = "com.segway.robot.action.PUSHING";
+    public static final String PUSH_RELEASE = "com.segway.robot.action.PUSH_RELEASE";
+    public static final String BASE_LOCK = "com.segway.robot.action.BASE_LOCK";
+    public static final String BASE_UNLOCK = "com.segway.robot.action.BASE_UNLOCK";
+    public static final String STAND_UP = "com.segway.robot.action.STAND_UP";
 
     private static List<ILoomoBaseStateListener> channel_BATTERY_CHANGED = new ArrayList<>();
     private static List<ILoomoBaseStateListener> channel_POWER_DOWN = new ArrayList<>();
@@ -61,19 +61,19 @@ public class LoomoBaseState implements ILoomoBaseStateObserver,INeedIntegrationI
     private static List<ILoomoBaseStateListener> channel_BASE_UNLOCK = new ArrayList<>();
     private static List<ILoomoBaseStateListener> channel_STAND_UP = new ArrayList<>();
 
-    private LoomoBaseState() {
+    private LoomoBaseStateService() {
         // Perhaps we need something here
     }
 
-    public static ILoomoBaseStateObserver getInstance(Context c) {
-        ILoomoBaseStateObserver result = instance;
+    public static IServiceLoomoBaseStateObserver getInstance(Context c) {
+        IServiceLoomoBaseStateObserver result = instance;
 
         if (result == null) {
             synchronized (mutex) {
                 result = instance;
                 if (result == null) {
                     IntentFilter filter = new IntentFilter();
-                    instance = result = new LoomoBaseState();
+                    instance = result = new LoomoBaseStateService();
                     c.getApplicationContext().registerReceiver(new LoomoBroadcastReceiver(instance,filter), filter);
                 }
 
@@ -339,9 +339,9 @@ public class LoomoBaseState implements ILoomoBaseStateObserver,INeedIntegrationI
         private static final String TAG = "LoomoBroadcastReceiver";
         // First I have to to setup the Events I am interested (We use the Android IntentFilter)
         private IntentFilter filter;
-        private ILoomoBaseStateObserver mgr;
+        private IServiceLoomoBaseStateObserver mgr;
 
-        public LoomoBroadcastReceiver(ILoomoBaseStateObserver m,IntentFilter f) {
+        public LoomoBroadcastReceiver(IServiceLoomoBaseStateObserver m, IntentFilter f) {
             filter = f;
             mgr = m;
             initListOfEvents();
