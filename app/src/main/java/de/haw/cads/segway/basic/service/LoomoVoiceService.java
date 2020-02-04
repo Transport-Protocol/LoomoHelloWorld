@@ -35,7 +35,7 @@ public class LoomoVoiceService implements IServiceNeedIntegrationInLoomoStateMac
 
     public synchronized void speak(String txt){
         if(isNotReady) {
-            Log.e(TAG, "Not ready, we can not say " + txt);
+            Log.e(TAG, "Not ready, we can not speak " + txt);
             return;
         }
         try {
